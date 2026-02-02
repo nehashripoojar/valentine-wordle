@@ -123,8 +123,9 @@ h1 {
     opacity: 0.5;
 }
 
+/* IMPORTANT: Hidden class must use !important to override inline styles */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* Final Screen Styling */
