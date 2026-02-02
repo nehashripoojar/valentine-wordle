@@ -19,6 +19,11 @@ const levels = [
   const hintEl = document.getElementById("hint");
   const levelNum = document.getElementById("level-num");
   const keyboard = document.getElementById("keyboard");
+  const gameContainer = document.getElementById("game-container");
+  const finalScreen = document.getElementById("final-screen");
+  const celebrationScreen = document.getElementById("celebration-screen");
+  const yesBtn = document.getElementById("yes-btn");
+  const obviouslyBtn = document.getElementById("obviously-btn");
   
   const WORD_LENGTH = 5;
   const MAX_GUESSES = 6;
@@ -27,7 +32,8 @@ const levels = [
   let guess = "";
   let guesses = [];
   let solution = "";
-  let letterStates = {}; // Track letter states: correct, wrong-position, not-in-word
+  let letterStates = {};
+  let tiles = [];
   
   function loadLevel() {
     console.log("Loading level:", currentLevel, "Total levels:", levels.length);
@@ -47,13 +53,14 @@ const levels = [
     levelNum.textContent = currentLevel + 1;
   
     // Create game board tiles
+    tiles = [];
     for (let i = 0; i < MAX_GUESSES * WORD_LENGTH; i++) {
       const tile = document.createElement("div");
       tile.className = "tile";
       board.appendChild(tile);
+      tiles.push(tile);
     }
     
-    // Create keyboard
     createKeyboard();
   }
   
@@ -65,22 +72,34 @@ const levels = [
       key.className = "key";
       key.id = `key-${letter}`;
       key.addEventListener("click", () => {
-        guess += letter;
-        updateBoard();
+        if (guess.length < WORD_LENGTH) {
+          guess += letter;
+          updateBoard();
+        }
       });
       keyboard.appendChild(key);
     });
   }
   
   function updateBoard() {
-    const tiles = document.querySelectorAll(".tile");
     let tileIndex = 0;
   
-    // Display previous guesses
+    // Display previous guesses with colors
     for (let i = 0; i < guesses.length; i++) {
       const guessWord = guesses[i];
       for (let j = 0; j < WORD_LENGTH; j++) {
-        tiles[tileIndex].textContent = guessWord[j];
+        const letter = guessWord[j];
+        tiles[tileIndex].textContent = letter;
+        
+        // Color the tile based on letter state
+        if (letter === solution[j]) {
+          tiles[tileIndex].classList.add("correct");
+        } else if (solution.includes(letter)) {
+          tiles[tileIndex].classList.add("wrong-position");
+        } else {
+          tiles[tileIndex].classList.add("not-in-word");
+        }
+        
         tileIndex++;
       }
     }
@@ -88,6 +107,7 @@ const levels = [
     // Display current guess
     for (let j = 0; j < guess.length; j++) {
       tiles[tileIndex].textContent = guess[j];
+      tiles[tileIndex].classList.remove("correct", "wrong-position", "not-in-word");
       tileIndex++;
     }
   }
@@ -111,23 +131,20 @@ const levels = [
   function submitGuess() {
     console.log("Guess:", guess, "Solution:", solution);
     
-    // Update letter states
+    // Update letter states for keyboard
     for (let i = 0; i < guess.length; i++) {
       const letter = guess[i];
       const keyElement = document.getElementById(`key-${letter}`);
       
       if (guess[i] === solution[i]) {
-        // Correct position
         letterStates[letter] = "correct";
         keyElement.classList.add("correct");
       } else if (solution.includes(letter)) {
-        // Wrong position
         if (letterStates[letter] !== "correct") {
           letterStates[letter] = "wrong-position";
           keyElement.classList.add("wrong-position");
         }
       } else {
-        // Not in word
         if (!letterStates[letter]) {
           letterStates[letter] = "not-in-word";
           keyElement.classList.add("not-in-word");
@@ -149,17 +166,39 @@ const levels = [
     console.log("Moving to level:", currentLevel, "Total levels:", levels.length);
     
     if (currentLevel === levels.length) {
-      console.log("Game complete! Showing popup");
-      showPopup();
+      console.log("Game complete! Showing final screen");
+      showFinalScreen();
     } else {
       setTimeout(loadLevel, 800);
     }
   }
   
-  function showPopup() {
-    console.log("showPopup called - Game Completed!");
-    const popup = document.getElementById("popup");
-    popup.classList.remove("hidden");
+  function showFinalScreen() {
+    gameContainer.classList.add("hidden");
+    finalScreen.classList.remove("hidden");
   }
+  
+  function showCelebration() {
+    finalScreen.classList.add("hidden");
+    celebrationScreen.classList.remove("hidden");
+    createConfetti();
+  }
+  
+  function createConfetti() {
+    const confettiPieces = 50;
+    for (let i = 0; i < confettiPieces; i++) {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      confetti.style.left = Math.random() * 100 + "%";
+      confetti.style.delay = Math.random() * 0.5 + "s";
+      document.body.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 3000);
+    }
+  }
+  
+  // Button event listeners
+  yesBtn.addEventListener("click", showCelebration);
+  obviouslyBtn.addEventListener("click", showCelebration);
   
   loadLevel();

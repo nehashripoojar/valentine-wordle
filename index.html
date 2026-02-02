@@ -7,21 +7,31 @@
 </head>
 <body>
 
-  <h1>Level <span id="level-num">1</span></h1>
-  <p id="hint"></p>
+  <div id="game-container">
+    <h1>Level <span id="level-num">1</span></h1>
+    <p id="hint"></p>
+    <div id="board"></div>
+    <div id="keyboard"></div>
+  </div>
 
-  <div id="board"></div>
-
-  <!-- Keyboard -->
-  <div id="keyboard"></div>
-
-  <!-- Final Popup -->
-  <div id="popup" class="hidden">
-    <div class="popup-content">
+  <!-- Final Screen -->
+  <div id="final-screen" class="hidden">
+    <div class="final-content">
       <h2>One last question 💖</h2>
       <p>Will you be my Valentine?</p>
-      <button>YES 💕</button>
-      <button>Obviously 💕</button>
+      <div class="button-group">
+        <button id="yes-btn" class="yes-btn">YES 💕</button>
+        <button id="obviously-btn" class="obviously-btn">Obviously 💕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Celebration Screen -->
+  <div id="celebration-screen" class="hidden">
+    <div class="celebration-content">
+      <h2>You've Won! 🎉</h2>
+      <p>Congratulations! You've won a free pass to my heart 💕</p>
+      <img id="celebration-gif" src="" alt="Celebration" />
     </div>
   </div>
 
