@@ -15,72 +15,91 @@ const levels = [
   
   let currentLevel = 0;
   
-
   const board = document.getElementById("board");
-const hintEl = document.getElementById("hint");
-const levelNum = document.getElementById("level-num");
-
-const WORD_LENGTH = 5;
-const MAX_GUESSES = 6;
-
-let guess = "";
-let guesses = [];
-let solution = "";
-
-function loadLevel() {
-  board.innerHTML = "";
-  guess = "";
-  guesses = [];
-
-  solution = levels[currentLevel].answer;
-  hintEl.textContent = "Hint: " + levels[currentLevel].hint;
-  levelNum.textContent = currentLevel + 1;
-
-  for (let i = 0; i < MAX_GUESSES * WORD_LENGTH; i++) {
-    const tile = document.createElement("div");
-    tile.className = "tile";
-    board.appendChild(tile);
+  const hintEl = document.getElementById("hint");
+  const levelNum = document.getElementById("level-num");
+  
+  const WORD_LENGTH = 5;
+  const MAX_GUESSES = 6;
+  
+  let guess = "";
+  let guesses = [];
+  let solution = "";
+  
+  function loadLevel() {
+    board.innerHTML = "";
+    guess = "";
+    guesses = [];
+  
+    solution = levels[currentLevel].answer;
+    hintEl.textContent = "Hint: " + levels[currentLevel].hint;
+    levelNum.textContent = currentLevel + 1;
+  
+    for (let i = 0; i < MAX_GUESSES * WORD_LENGTH; i++) {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      board.appendChild(tile);
+    }
   }
-}
-
-document.addEventListener("keydown", (e) => {
-  if (guess.length < WORD_LENGTH && /^[a-z]$/i.test(e.key)) {
-    guess += e.key.toUpperCase();
-    updateBoard();
+  
+  function updateBoard() {
+    const tiles = document.querySelectorAll(".tile");
+    let tileIndex = 0;
+  
+    for (let i = 0; i < guesses.length; i++) {
+      const guessWord = guesses[i];
+      for (let j = 0; j < WORD_LENGTH; j++) {
+        tiles[tileIndex].textContent = guessWord[j];
+        tileIndex++;
+      }
+    }
+  
+    for (let j = 0; j < guess.length; j++) {
+      tiles[tileIndex].textContent = guess[j];
+      tileIndex++;
+    }
   }
-
-  if (e.key === "Enter" && guess.length === WORD_LENGTH) {
-    submitGuess();
+  
+  document.addEventListener("keydown", (e) => {
+    if (guess.length < WORD_LENGTH && /^[a-z]$/i.test(e.key)) {
+      guess += e.key.toUpperCase();
+      updateBoard();
+    }
+  
+    if (e.key === "Enter" && guess.length === WORD_LENGTH) {
+      submitGuess();
+    }
+  
+    if (e.key === "Backspace") {
+      guess = guess.slice(0, -1);
+      updateBoard();
+    }
+  });
+  
+  function submitGuess() {
+    if (guess === solution) {
+      nextLevel();
+    } else {
+      guesses.push(guess);
+      guess = "";
+      updateBoard();
+    }
   }
-
-  if (e.key === "Backspace") {
-    guess = guess.slice(0, -1);
-    updateBoard();
+  
+  function nextLevel() {
+    currentLevel++;
+    if (currentLevel === levels.length) {
+      showPopup();
+    } else {
+      setTimeout(loadLevel, 800);
+    }
   }
-});
-
-function submitGuess() {
-  if (guess === solution) {
-    nextLevel();
-  }
-  guesses.push(guess);
-  guess = "";
-}
-
-function nextLevel() {
-  currentLevel++;
-  if (currentLevel === levels.length) {
-    showPopup();
-  } else {
-    setTimeout(loadLevel, 800);
-  }
-}
-
-function showPopup() {
+  
+  function showPopup() {
     const popup = document.getElementById("popup");
     if (popup.classList.contains("hidden")) {
-        popup.classList.remove("hidden");
+      popup.classList.remove("hidden");
     }
-}
-
-loadLevel();
+  }
+  
+  loadLevel();
