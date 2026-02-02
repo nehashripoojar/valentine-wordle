@@ -27,6 +27,7 @@ const levels = [
   let solution = "";
   
   function loadLevel() {
+    console.log("Loading level:", currentLevel);
     board.innerHTML = "";
     guess = "";
     guesses = [];
@@ -77,6 +78,7 @@ const levels = [
   });
   
   function submitGuess() {
+    console.log("Guess:", guess, "Solution:", solution);
     if (guess === solution) {
       nextLevel();
     } else {
@@ -88,7 +90,9 @@ const levels = [
   
   function nextLevel() {
     currentLevel++;
+    console.log("Moving to level:", currentLevel);
     if (currentLevel === levels.length) {
+      console.log("Game complete! Showing popup");
       showPopup();
     } else {
       setTimeout(loadLevel, 800);
@@ -96,10 +100,10 @@ const levels = [
   }
   
   function showPopup() {
+    console.log("showPopup called");
     const popup = document.getElementById("popup");
-    if (popup.classList.contains("hidden")) {
-      popup.classList.remove("hidden");
-    }
+    popup.classList.remove("hidden");
   }
   
+  // Initialize the game
   loadLevel();
