@@ -4,12 +4,12 @@ const levels = [
       hint: "Something you do when you see me"
     },
     {
-      answer: "COFFEE",
-      hint: "Our favorite excuse to meet ☕"
+      answer: "ASIAN",
+      hint: "My favorite cusine"
     },
     {
-      answer: "KANDHU",
-      hint: "The final answer ❤️"
+      answer: "KANDH",
+      hint: "Your favorite nickname for me❤️"
     }
   ];
   
