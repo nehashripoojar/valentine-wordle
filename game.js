@@ -5,7 +5,15 @@ const levels = [
     },
     {
       answer: "ASIAN",
-      hint: "My favorite cuisine to try with you 🍜"
+      hint: "My favorite cuisine to try with you"
+    },
+    {
+        answer: "PAINT",
+        hint: "Smt we did in Boulevard mg road??"
+    },
+    {
+        answer: "DISCU",
+        hint: "What we love doing the most together"
     },
     {
       answer: "KANDH",
@@ -34,6 +42,7 @@ const levels = [
   let solution = "";
   let letterStates = {};
   let tiles = [];
+  let levelWon = false;
   
   // Ensure game container is visible on load
   gameContainer.classList.remove("hidden");
@@ -55,6 +64,7 @@ const levels = [
     finalScreen.classList.add("hidden");
     celebrationScreen.classList.add("hidden");
     
+    levelWon = false;
     board.innerHTML = "";
     guess = "";
     guesses = [];
@@ -83,8 +93,18 @@ const levels = [
       key.textContent = letter;
       key.className = "key";
       key.id = `key-${letter}`;
+      
+      // Apply color if letter was already guessed in this level
+      if (letterStates[letter] === "correct") {
+        key.classList.add("correct");
+      } else if (letterStates[letter] === "wrong-position") {
+        key.classList.add("wrong-position");
+      } else if (letterStates[letter] === "not-in-word") {
+        key.classList.add("not-in-word");
+      }
+      
       key.addEventListener("click", () => {
-        if (guess.length < WORD_LENGTH) {
+        if (guess.length < WORD_LENGTH && !levelWon) {
           guess += letter;
           updateBoard();
         }
@@ -134,6 +154,14 @@ const levels = [
   }
   
   document.addEventListener("keydown", (e) => {
+    // Skip input if level won
+    if (levelWon && e.key === "Enter") {
+      nextLevel();
+      return;
+    }
+    
+    if (levelWon) return;
+    
     if (guess.length < WORD_LENGTH && /^[a-z]$/i.test(e.key)) {
       guess += e.key.toUpperCase();
       updateBoard();
@@ -174,7 +202,10 @@ const levels = [
     }
     
     if (guess === solution) {
-      nextLevel();
+      levelWon = true;
+      guesses.push(guess);
+      updateBoard();
+      showWinMessage();
     } else {
       guesses.push(guess);
       guess = "";
@@ -182,7 +213,29 @@ const levels = [
     }
   }
   
+  function showWinMessage() {
+    // Add a message below the board
+    const messageEl = document.createElement("div");
+    messageEl.id = "win-message";
+    messageEl.textContent = "🎉 Press Enter to continue 🎉";
+    messageEl.style.marginTop = "20px";
+    messageEl.style.fontSize = "1.3rem";
+    messageEl.style.color = "white";
+    messageEl.style.textShadow = "2px 2px 4px rgba(0,0,0,0.3)";
+    messageEl.style.animation = "pulse 1.5s infinite";
+    
+    // Remove old message if it exists
+    const oldMessage = document.getElementById("win-message");
+    if (oldMessage) oldMessage.remove();
+    
+    gameContainer.appendChild(messageEl);
+  }
+  
   function nextLevel() {
+    // Remove win message
+    const messageEl = document.getElementById("win-message");
+    if (messageEl) messageEl.remove();
+    
     currentLevel++;
     console.log("Moving to level:", currentLevel, "Total levels:", levels.length);
     
