@@ -35,6 +35,13 @@ const levels = [
   let letterStates = {};
   let tiles = [];
   
+  // Ensure game container is visible on load
+  gameContainer.classList.remove("hidden");
+  finalScreen.classList.add("hidden");
+  celebrationScreen.classList.add("hidden");
+  
+  console.log("Game initialized - currentLevel:", currentLevel);
+  
   function loadLevel() {
     console.log("Loading level:", currentLevel, "Total levels:", levels.length);
     
@@ -42,6 +49,11 @@ const levels = [
       console.log("Game already completed!");
       return;
     }
+    
+    // Ensure game container is visible
+    gameContainer.classList.remove("hidden");
+    finalScreen.classList.add("hidden");
+    celebrationScreen.classList.add("hidden");
     
     board.innerHTML = "";
     guess = "";
@@ -183,11 +195,15 @@ const levels = [
   }
   
   function showFinalScreen() {
+    console.log("Showing final screen");
     gameContainer.classList.add("hidden");
     finalScreen.classList.remove("hidden");
+    celebrationScreen.classList.add("hidden");
   }
   
   function showCelebration() {
+    console.log("Showing celebration screen");
+    gameContainer.classList.add("hidden");
     finalScreen.classList.add("hidden");
     celebrationScreen.classList.remove("hidden");
     createConfetti();
@@ -210,4 +226,5 @@ const levels = [
   yesBtn.addEventListener("click", showCelebration);
   obviouslyBtn.addEventListener("click", showCelebration);
   
+  // Initialize the game
   loadLevel();
