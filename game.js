@@ -79,4 +79,5 @@ function nextLevel() {
 function showPopup() {
     document.getElementById("popup").classList.remove("hidden");
   }
-  
+
+loadLevel();
