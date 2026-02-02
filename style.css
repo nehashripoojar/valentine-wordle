@@ -10,7 +10,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 100%);
+    background-color: #ADD8E6;
     font-family: Arial, sans-serif;
     padding: 20px;
 }
@@ -131,7 +131,7 @@ h1 {
 #final-screen {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 100%);
+    background: linear-gradient(135deg, #ADD8E6 0%, #87CEEB 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -187,12 +187,12 @@ h1 {
 }
 
 .obviously-btn {
-    background-color: #87CEEB;
-    color: white;
+    background-color: #ADD8E6;
+    color: #333;
 }
 
 .obviously-btn:hover {
-    background-color: #5BA3D0;
+    background-color: #87CEEB;
     transform: scale(1.05);
 }
 
@@ -200,7 +200,7 @@ h1 {
 #celebration-screen {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 100%);
+    background: linear-gradient(135deg, #ADD8E6 0%, #87CEEB 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,7 +237,7 @@ h1 {
     position: fixed;
     width: 10px;
     height: 10px;
-    background: radial-gradient(circle, #ff6b9d, #87CEEB);
+    background: radial-gradient(circle, #ff6b9d, #ADD8E6);
     border-radius: 50%;
     pointer-events: none;
     animation: fall 3s ease-in forwards;

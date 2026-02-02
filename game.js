@@ -84,6 +84,15 @@ const levels = [
   function updateBoard() {
     let tileIndex = 0;
   
+    // Clear all tiles first
+    tiles.forEach(tile => {
+      tile.textContent = "";
+      tile.classList.remove("correct", "wrong-position", "not-in-word");
+    });
+  
+    // Reset tileIndex
+    tileIndex = 0;
+  
     // Display previous guesses with colors
     for (let i = 0; i < guesses.length; i++) {
       const guessWord = guesses[i];
