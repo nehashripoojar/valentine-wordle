@@ -77,7 +77,10 @@ function nextLevel() {
 }
 
 function showPopup() {
-    document.getElementById("popup").classList.remove("hidden");
-  }
+    const popup = document.getElementById("popup");
+    if (popup.classList.contains("hidden")) {
+        popup.classList.remove("hidden");
+    }
+}
 
 loadLevel();
