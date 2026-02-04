@@ -204,6 +204,7 @@ const levels = [
     if (guess === solution) {
       levelWon = true;
       guesses.push(guess);
+      guess = "";
       updateBoard();
       showWinMessage();
     } else {
